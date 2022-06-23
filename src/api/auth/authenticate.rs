@@ -2,7 +2,7 @@ use rocket::serde::json::Json;
 
 use crate::{
     structs::yggdrasil::{Agent, AuthenticationProfile, User},
-    Result,
+    Result, Ygg,
 };
 
 /// # Information to log into Yggdrasil
@@ -56,6 +56,9 @@ pub struct ResponseAuthenticate {
 /// https://wiki.vg/Authentication#Authenticate
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/authenticate", data = "<data>")]
-pub async fn authenticate(data: Json<PayloadAuthenticate>) -> Result<Json<ResponseAuthenticate>> {
-    todo!()
+pub async fn authenticate(
+    ygg: &Ygg,
+    data: Json<PayloadAuthenticate>,
+) -> Result<Json<ResponseAuthenticate>> {
+    ygg.authenticate(data.into_inner()).await.map(Json)
 }

@@ -1,6 +1,7 @@
+use rocket::serde::json::Json;
 use rocket_empty::EmptyResponse;
 
-use crate::Result;
+use crate::{Result, Ygg};
 
 /// # Information about known access token
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -19,8 +20,7 @@ pub struct PayloadValidate {
 ///
 /// https://wiki.vg/Authentication#Validate
 #[openapi(tag = "Yggdrasil Auth Server")]
-#[post("/validate")]
-pub async fn validate() -> Result<EmptyResponse> {
-    todo!();
-    // EmptyResponse
+#[post("/validate", data = "<data>")]
+pub async fn validate(ygg: &Ygg, data: Json<PayloadValidate>) -> Result<EmptyResponse> {
+    ygg.validate(data.into_inner()).await.map(|_| EmptyResponse)
 }

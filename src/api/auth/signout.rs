@@ -1,7 +1,7 @@
 use rocket::serde::json::Json;
 use rocket_empty::EmptyResponse;
 
-use crate::Result;
+use crate::{Result, Ygg};
 
 /// # User credentials to log out of
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -21,6 +21,6 @@ pub struct PayloadSignout {
 /// https://wiki.vg/Authentication#Signout
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/signout", data = "<data>")]
-pub async fn signout(data: Json<PayloadSignout>) -> Result<EmptyResponse> {
-    todo!()
+pub async fn signout(ygg: &Ygg, data: Json<PayloadSignout>) -> Result<EmptyResponse> {
+    ygg.signout(data.into_inner()).await.map(|_| EmptyResponse)
 }

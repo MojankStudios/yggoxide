@@ -2,7 +2,7 @@ use rocket::serde::json::Json;
 
 use crate::{
     structs::yggdrasil::{AuthenticationProfile, User},
-    Result,
+    Result, Ygg,
 };
 
 /// # Information to refresh access token
@@ -48,6 +48,6 @@ pub struct ResponseRefresh {
 /// https://wiki.vg/Authentication#Refresh
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/refresh", data = "<data>")]
-pub async fn refresh(data: Json<PayloadRefresh>) -> Result<Json<ResponseRefresh>> {
-    todo!()
+pub async fn refresh(ygg: &Ygg, data: Json<PayloadRefresh>) -> Result<Json<ResponseRefresh>> {
+    ygg.refresh(data.into_inner()).await.map(Json)
 }

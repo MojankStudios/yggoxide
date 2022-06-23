@@ -1,7 +1,7 @@
 use rocket::serde::json::Json;
 use rocket_empty::EmptyResponse;
 
-use crate::Result;
+use crate::{Result, Ygg};
 
 /// # Information to join a Minecraft server
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -22,6 +22,8 @@ pub struct PayloadJoinServer {
 /// https://wiki.vg/Protocol_Encryption#Client
 #[openapi(tag = "Minecraft Session Server")]
 #[post("/minecraft/join", data = "<data>")]
-pub async fn join(data: Json<PayloadJoinServer>) -> Result<EmptyResponse> {
-    todo!()
+pub async fn join(ygg: &Ygg, data: Json<PayloadJoinServer>) -> Result<EmptyResponse> {
+    ygg.join_server(data.into_inner())
+        .await
+        .map(|_| EmptyResponse)
 }

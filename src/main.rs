@@ -12,7 +12,10 @@ pub mod r#impl;
 pub mod structs;
 pub mod traits;
 
+use rocket::State;
 pub use structs::error::{Error, Result};
+
+pub type Ygg = State<Box<dyn traits::YggoxideImpl>>;
 
 #[launch]
 fn rocket() -> _ {

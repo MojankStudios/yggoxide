@@ -1,7 +1,7 @@
 use rocket::serde::json::Json;
 use rocket_empty::EmptyResponse;
 
-use crate::Result;
+use crate::{Result, Ygg};
 
 /// # Information to log into Yggdrasil
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -21,6 +21,8 @@ pub struct PayloadInvalidate {
 /// https://wiki.vg/Authentication#Invalidate
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/invalidate", data = "<data>")]
-pub async fn invalidate(data: Json<PayloadInvalidate>) -> Result<EmptyResponse> {
-    todo!()
+pub async fn invalidate(ygg: &Ygg, data: Json<PayloadInvalidate>) -> Result<EmptyResponse> {
+    ygg.invalidate(data.into_inner())
+        .await
+        .map(|_| EmptyResponse)
 }

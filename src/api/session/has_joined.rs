@@ -1,6 +1,6 @@
 use rocket::serde::json::Json;
 
-use crate::{structs::session::Profile, Result};
+use crate::{structs::session::Profile, Result, Ygg};
 
 /// # Information about user who is joining
 #[derive(FromForm, JsonSchema)]
@@ -21,6 +21,6 @@ pub struct QueryHasJoined {
 /// https://wiki.vg/Protocol_Encryption#Server
 #[openapi(tag = "Minecraft Session Server")]
 #[get("/minecraft/hasJoined?<data..>")]
-pub async fn has_joined(data: QueryHasJoined) -> Result<Json<Profile>> {
-    todo!()
+pub async fn has_joined(ygg: &Ygg, data: QueryHasJoined) -> Result<Json<Profile>> {
+    ygg.has_joined(data).await.map(Json)
 }
