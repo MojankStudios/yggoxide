@@ -1,6 +1,6 @@
 use rocket::serde::json::Json;
 
-use crate::structs::yggdrasil::{Agent, Profile, User};
+use crate::structs::yggdrasil::{Agent, AuthenticationProfile, User};
 
 /// Information to log into Yggdrasil
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -40,10 +40,10 @@ pub struct ResponseAuthenticate {
     access_token: String,
 
     /// Available profiles
-    available_profiles: Vec<Profile>,
+    available_profiles: Vec<AuthenticationProfile>,
 
     /// Selected profile
-    selected_profile: Profile,
+    selected_profile: AuthenticationProfile,
 }
 
 /// # Authenticate

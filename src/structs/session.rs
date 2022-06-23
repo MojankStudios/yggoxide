@@ -11,9 +11,9 @@ pub enum PlayerProperty {
     },
 }
 
-/// # Player Session
+/// # Player Profile
 #[derive(Serialize, Deserialize, JsonSchema)]
-pub struct Session {
+pub struct Profile {
     /// Profile identifier
     id: String,
 

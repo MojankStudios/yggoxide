@@ -4,7 +4,8 @@ use rocket_okapi::openapi_get_routes_spec;
 
 mod has_joined;
 mod join;
+mod profile;
 
 pub fn routes() -> (Vec<Route>, OpenApi) {
-    openapi_get_routes_spec![join::join, has_joined::has_joined]
+    openapi_get_routes_spec![join::join, has_joined::has_joined, profile::fetch_profile]
 }

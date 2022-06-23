@@ -1,6 +1,6 @@
 use rocket::serde::json::Json;
 
-use crate::structs::yggdrasil::{Profile, User};
+use crate::structs::yggdrasil::{AuthenticationProfile, User};
 
 /// Information to refresh access token
 #[derive(Serialize, Deserialize, JsonSchema)]
@@ -13,7 +13,7 @@ pub struct PayloadRefresh {
     access_token: String,
 
     /// Selected profile
-    selected_profile: Profile,
+    selected_profile: AuthenticationProfile,
 
     /// Whether to add the `user` object to the response
     request_user: Option<bool>,
@@ -35,7 +35,7 @@ pub struct ResponseRefresh {
     access_token: String,
 
     /// Selected profile
-    selected_profile: Profile,
+    selected_profile: AuthenticationProfile,
 }
 
 /// # Refresh

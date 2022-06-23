@@ -83,9 +83,9 @@ pub struct User {
     id: String,
 }
 
-/// # Profile
+/// # Authentication Profile
 #[derive(Serialize, Deserialize, JsonSchema)]
-pub struct Profile {
+pub struct AuthenticationProfile {
     /// Username
     name: String,
 
