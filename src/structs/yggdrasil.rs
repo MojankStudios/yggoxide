@@ -8,9 +8,9 @@ pub enum ServerStatus {
 
 /// # Runtime Mode
 #[derive(Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub enum RuntimeMode {
-    #[serde(rename = "productionMode")]
-    Production,
+    ProductionMode,
 }
 
 /// # Information about the Yggdrasil node
@@ -34,4 +34,61 @@ pub struct Information {
     pub specification_version: String,
     #[serde(rename = "Implementation-Version")]
     pub implementation_version: String,
+}
+
+/// # Yggdrasil client information
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct Agent {
+    /// Name of the remote client
+    pub name: String,
+
+    /// Protocol version of the client
+    pub version: usize,
+}
+
+/// # User property
+#[derive(Serialize, Deserialize, JsonSchema)]
+#[serde(tag = "name")]
+pub enum UserProperty {
+    /// Preferred language used by this user
+    #[serde(rename = "preferredLanguage")]
+    PreferredLanguage {
+        /// Valid language code
+        value: String,
+    },
+    /// Country of account registration
+    #[serde(rename = "registrationCountry")]
+    RegistrationCountry {
+        /// 2L country code
+        value: String,
+    },
+    /// Twitch token credentials if associated
+    #[serde(rename = "twitch_access_token")]
+    TwitchAccessToken {
+        /// Valid OAuth 2.0 token
+        value: String,
+    },
+}
+
+/// # User
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct User {
+    /// Username
+    username: String,
+
+    /// Additional user properties
+    properties: Vec<UserProperty>,
+
+    /// The `remoteID` for the user
+    id: String,
+}
+
+/// # Profile
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct Profile {
+    /// Username
+    name: String,
+
+    /// UUID of the account
+    id: String,
 }

@@ -7,10 +7,12 @@ edition = "2021"
 
 [dependencies]
 # Serde
+uuid = { version = "1.1.2", features = ["serde"] }
 serde = { version = "1.0.137", features = [ "derive" ] }
 
 # Rocket
 rocket = { version = "0.5.0-rc.2", default-features = false, features = ["json"] }
+rocket_empty = { git = "https://github.com/insertish/rocket_empty", branch = "master" }
 
 # Schemas
 rocket_okapi = { git = "https://github.com/insertish/okapi", rev = "a1048d0c8cd771e424ec97d33d825c32e06aa120", features = [ "swagger" ] }

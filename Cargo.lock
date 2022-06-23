@@ -978,6 +978,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "rocket_empty"
+version = "0.1.0"
+source = "git+https://github.com/insertish/rocket_empty?branch=master#9d8234fc3bb215ea241b787301e8cff68ae53652"
+dependencies = [
+ "okapi",
+ "rocket",
+ "rocket_okapi",
+]
+
+[[package]]
 name = "rocket_http"
 version = "0.5.0-rc.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1460,6 +1470,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "uuid"
+version = "1.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dd6469f4314d5f1ffec476e05f17cc9a78bc7a27a6a857842170bdf8d6f98d2f"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "valuable"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1564,7 +1583,9 @@ version = "0.1.0"
 dependencies = [
  "okapi",
  "rocket",
+ "rocket_empty",
  "rocket_okapi",
  "schemars",
  "serde",
+ "uuid",
 ]

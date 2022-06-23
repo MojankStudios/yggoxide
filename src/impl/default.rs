@@ -10,7 +10,7 @@ impl Default for ServerStatus {
 
 impl Default for RuntimeMode {
     fn default() -> Self {
-        Self::Production
+        Self::ProductionMode
     }
 }
 
