@@ -1,7 +1,9 @@
 use rocket::serde::json::Json;
 use rocket_empty::EmptyResponse;
 
-/// Information to log into Yggdrasil
+use crate::Result;
+
+/// # User credentials to log out of
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PayloadSignout {
@@ -19,6 +21,6 @@ pub struct PayloadSignout {
 /// https://wiki.vg/Authentication#Signout
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/signout", data = "<data>")]
-pub async fn signout(data: Json<PayloadSignout>) -> EmptyResponse {
+pub async fn signout(data: Json<PayloadSignout>) -> Result<EmptyResponse> {
     todo!()
 }

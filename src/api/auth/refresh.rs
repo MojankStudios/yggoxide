@@ -1,8 +1,11 @@
 use rocket::serde::json::Json;
 
-use crate::structs::yggdrasil::{AuthenticationProfile, User};
+use crate::{
+    structs::yggdrasil::{AuthenticationProfile, User},
+    Result,
+};
 
-/// Information to refresh access token
+/// # Information to refresh access token
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PayloadRefresh {
@@ -19,7 +22,7 @@ pub struct PayloadRefresh {
     request_user: Option<bool>,
 }
 
-/// Response with new access token
+/// # Response with new access token
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ResponseRefresh {
@@ -45,6 +48,6 @@ pub struct ResponseRefresh {
 /// https://wiki.vg/Authentication#Refresh
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/refresh", data = "<data>")]
-pub async fn refresh(data: Json<PayloadRefresh>) -> Json<ResponseRefresh> {
+pub async fn refresh(data: Json<PayloadRefresh>) -> Result<Json<ResponseRefresh>> {
     todo!()
 }

@@ -1,8 +1,11 @@
 use rocket::serde::json::Json;
 
-use crate::structs::yggdrasil::{Agent, AuthenticationProfile, User};
+use crate::{
+    structs::yggdrasil::{Agent, AuthenticationProfile, User},
+    Result,
+};
 
-/// Information to log into Yggdrasil
+/// # Information to log into Yggdrasil
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PayloadAuthenticate {
@@ -22,7 +25,7 @@ pub struct PayloadAuthenticate {
     request_user: Option<bool>,
 }
 
-/// Response with access token for further requests
+/// # Response with access token for further requests
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ResponseAuthenticate {
@@ -53,6 +56,6 @@ pub struct ResponseAuthenticate {
 /// https://wiki.vg/Authentication#Authenticate
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/authenticate", data = "<data>")]
-pub async fn authenticate(data: Json<PayloadAuthenticate>) -> Json<ResponseAuthenticate> {
+pub async fn authenticate(data: Json<PayloadAuthenticate>) -> Result<Json<ResponseAuthenticate>> {
     todo!()
 }

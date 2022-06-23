@@ -1,8 +1,8 @@
 use rocket::serde::json::Json;
 
-use crate::structs::session::Profile;
+use crate::{structs::session::Profile, Result};
 
-/// Information to log into Yggdrasil
+/// # Information about user who is joining
 #[derive(FromForm, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryHasJoined {
@@ -21,6 +21,6 @@ pub struct QueryHasJoined {
 /// https://wiki.vg/Protocol_Encryption#Server
 #[openapi(tag = "Minecraft Session Server")]
 #[get("/minecraft/hasJoined?<data..>")]
-pub async fn has_joined(data: QueryHasJoined) -> Json<Profile> {
+pub async fn has_joined(data: QueryHasJoined) -> Result<Json<Profile>> {
     todo!()
 }

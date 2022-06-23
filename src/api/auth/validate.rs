@@ -1,6 +1,8 @@
 use rocket_empty::EmptyResponse;
 
-/// Information about known access token
+use crate::Result;
+
+/// # Information about known access token
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PayloadValidate {
@@ -18,7 +20,7 @@ pub struct PayloadValidate {
 /// https://wiki.vg/Authentication#Validate
 #[openapi(tag = "Yggdrasil Auth Server")]
 #[post("/validate")]
-pub async fn validate() -> EmptyResponse {
+pub async fn validate() -> Result<EmptyResponse> {
     todo!();
     // EmptyResponse
 }

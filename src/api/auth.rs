@@ -2,12 +2,12 @@ use okapi::openapi3::OpenApi;
 use rocket::Route;
 use rocket_okapi::openapi_get_routes_spec;
 
-mod authenticate;
-mod index;
-mod invalidate;
-mod refresh;
-mod signout;
-mod validate;
+pub mod authenticate;
+pub mod index;
+pub mod invalidate;
+pub mod refresh;
+pub mod signout;
+pub mod validate;
 
 pub fn routes() -> (Vec<Route>, OpenApi) {
     openapi_get_routes_spec![

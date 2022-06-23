@@ -22,3 +22,5 @@ pub enum Error {
     ResourceException(InnerError),
     GoneException(InnerError),
 }
+
+pub type Result<T> = std::result::Result<T, Error>;
