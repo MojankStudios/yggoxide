@@ -1,0 +1,689 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "yggoxide",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Information",
+        "description": "Information about the authentication server.\n\nDervied from https://authserver.mojang.com/",
+        "operationId": "index_index",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Information"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authenticate": {
+      "post": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Authenticate",
+        "description": "Authenticates a user using their password.\n\nhttps://wiki.vg/Authentication#Authenticate",
+        "operationId": "authenticate_authenticate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayloadAuthenticate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseAuthenticate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Refresh",
+        "description": "Refreshes a valid `accessToken`. It can be used to keep a user logged in between gaming sessions and is preferred over storing the user's password in a file.\n\nhttps://wiki.vg/Authentication#Refresh",
+        "operationId": "refresh_refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayloadRefresh"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseRefresh"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validate": {
+      "post": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Validate",
+        "description": "Checks if an `accessToken` is usable for authentication with a Minecraft server. The Minecraft Launcher (as of version 1.6.13) calls this endpoint on startup to verify that its saved token is still usable, and calls `/refresh` if this returns an error.\n\nhttps://wiki.vg/Authentication#Validate",
+        "operationId": "validate_validate",
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/signout": {
+      "post": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Signout",
+        "description": "Invalidates `accessTokens` using an account's username and password.\n\nhttps://wiki.vg/Authentication#Signout",
+        "operationId": "signout_signout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayloadSignout"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/invalidate": {
+      "post": {
+        "tags": [
+          "Yggdrasil Auth Server"
+        ],
+        "summary": "Invalidate",
+        "description": "Invalidates `accessTokens` using a client/access token pair.\n\nhttps://wiki.vg/Authentication#Invalidate",
+        "operationId": "invalidate_invalidate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayloadInvalidate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/session/minecraft/join": {
+      "post": {
+        "tags": [
+          "Minecraft Session Server"
+        ],
+        "summary": "Join a server",
+        "description": "https://wiki.vg/Protocol_Encryption#Client",
+        "operationId": "join_join",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayloadJoinServer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/session/minecraft/hasJoined": {
+      "get": {
+        "tags": [
+          "Minecraft Session Server"
+        ],
+        "summary": "Check if user has joined",
+        "description": "https://wiki.vg/Protocol_Encryption#Client",
+        "operationId": "has_joined_has_joined",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username",
+            "required": true,
+            "schema": {
+              "description": "Username",
+              "type": "string"
+            }
+          },
+          {
+            "name": "serverId",
+            "in": "query",
+            "description": "Server hash",
+            "required": true,
+            "schema": {
+              "description": "Server hash",
+              "type": "string"
+            }
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "description": "User IP address",
+            "required": true,
+            "schema": {
+              "description": "User IP address",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Information": {
+        "title": "Information about the Yggdrasil node",
+        "description": "This is derived from the response at https://authserver.mojang.com/",
+        "type": "object",
+        "required": [
+          "Application-Author",
+          "Application-Description",
+          "Application-Name",
+          "Implementation-Version",
+          "Runtime-Mode",
+          "Specification-Version",
+          "Status"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/ServerStatus"
+          },
+          "Runtime-Mode": {
+            "$ref": "#/components/schemas/RuntimeMode"
+          },
+          "Application-Author": {
+            "type": "string"
+          },
+          "Application-Description": {
+            "type": "string"
+          },
+          "Specification-Version": {
+            "type": "string"
+          },
+          "Application-Name": {
+            "type": "string"
+          },
+          "Implementation-Version": {
+            "type": "string"
+          }
+        }
+      },
+      "ServerStatus": {
+        "title": "Service Status",
+        "description": "Currently reported service status.",
+        "type": "string",
+        "enum": [
+          "OK"
+        ]
+      },
+      "RuntimeMode": {
+        "title": "Runtime Mode",
+        "type": "string",
+        "enum": [
+          "productionMode"
+        ]
+      },
+      "ResponseAuthenticate": {
+        "description": "Response with access token for further requests",
+        "type": "object",
+        "required": [
+          "accessToken",
+          "availableProfiles",
+          "clientToken",
+          "selectedProfile"
+        ],
+        "properties": {
+          "user": {
+            "description": "User\n\nWill only be returned if explicitly asked for",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true
+          },
+          "clientToken": {
+            "description": "Client identifier",
+            "type": "string"
+          },
+          "accessToken": {
+            "description": "Hexadecimal or JWT\n\nThe normal accessToken can be found in the payload of the JWT (second by '.' separated part as Base64 encoded JSON object), in key \"yggt\"",
+            "type": "string"
+          },
+          "availableProfiles": {
+            "description": "Available profiles",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Profile"
+            }
+          },
+          "selectedProfile": {
+            "description": "Selected profile",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Profile"
+              }
+            ]
+          }
+        }
+      },
+      "User": {
+        "title": "User",
+        "type": "object",
+        "required": [
+          "id",
+          "properties",
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "description": "Username",
+            "type": "string"
+          },
+          "properties": {
+            "description": "Additional user properties",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserProperty"
+            }
+          },
+          "id": {
+            "description": "The `remoteID` for the user",
+            "type": "string"
+          }
+        }
+      },
+      "UserProperty": {
+        "title": "User property",
+        "oneOf": [
+          {
+            "description": "Preferred language used by this user",
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "preferredLanguage"
+                ]
+              },
+              "value": {
+                "description": "Valid language code",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "description": "Country of account registration",
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "registrationCountry"
+                ]
+              },
+              "value": {
+                "description": "2L country code",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "description": "Twitch token credentials if associated",
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "twitch_access_token"
+                ]
+              },
+              "value": {
+                "description": "Valid OAuth 2.0 token",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Profile": {
+        "title": "Profile",
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "description": "Username",
+            "type": "string"
+          },
+          "id": {
+            "description": "UUID of the account",
+            "type": "string"
+          }
+        }
+      },
+      "PayloadAuthenticate": {
+        "description": "Information to log into Yggdrasil",
+        "type": "object",
+        "required": [
+          "agent",
+          "password",
+          "username"
+        ],
+        "properties": {
+          "agent": {
+            "description": "Information about the client connecting",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Agent"
+              }
+            ]
+          },
+          "username": {
+            "description": "Account name (email or player name)",
+            "type": "string"
+          },
+          "password": {
+            "description": "Account password",
+            "type": "string"
+          },
+          "clientToken": {
+            "description": "Optional client identifier",
+            "type": "string",
+            "nullable": true
+          },
+          "requestUser": {
+            "description": "Whether to add the `user` object to the response",
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "Agent": {
+        "title": "Yggdrasil client information",
+        "type": "object",
+        "required": [
+          "name",
+          "version"
+        ],
+        "properties": {
+          "name": {
+            "description": "Name of the remote client",
+            "type": "string"
+          },
+          "version": {
+            "description": "Protocol version of the client",
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0.0
+          }
+        }
+      },
+      "ResponseRefresh": {
+        "description": "Response with new access token",
+        "type": "object",
+        "required": [
+          "accessToken",
+          "clientToken",
+          "selectedProfile"
+        ],
+        "properties": {
+          "user": {
+            "description": "User\n\nWill only be returned if explicitly asked for",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true
+          },
+          "clientToken": {
+            "description": "Client identifier",
+            "type": "string"
+          },
+          "accessToken": {
+            "description": "Access token",
+            "type": "string"
+          },
+          "selectedProfile": {
+            "description": "Selected profile",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Profile"
+              }
+            ]
+          }
+        }
+      },
+      "PayloadRefresh": {
+        "description": "Information to refresh access token",
+        "type": "object",
+        "required": [
+          "accessToken",
+          "clientToken",
+          "selectedProfile"
+        ],
+        "properties": {
+          "clientToken": {
+            "description": "Client identifier",
+            "type": "string"
+          },
+          "accessToken": {
+            "description": "Access token",
+            "type": "string"
+          },
+          "selectedProfile": {
+            "description": "Selected profile",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Profile"
+              }
+            ]
+          },
+          "requestUser": {
+            "description": "Whether to add the `user` object to the response",
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "PayloadSignout": {
+        "description": "Information to log into Yggdrasil",
+        "type": "object",
+        "required": [
+          "password",
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "description": "Account name (email or player name)",
+            "type": "string"
+          },
+          "password": {
+            "description": "Account password",
+            "type": "string"
+          }
+        }
+      },
+      "PayloadInvalidate": {
+        "description": "Information to log into Yggdrasil",
+        "type": "object",
+        "required": [
+          "accessToken",
+          "clientToken"
+        ],
+        "properties": {
+          "clientToken": {
+            "description": "Client identifier",
+            "type": "string"
+          },
+          "accessToken": {
+            "description": "Access token",
+            "type": "string"
+          }
+        }
+      },
+      "PayloadJoinServer": {
+        "description": "Information to join a Minecraft server",
+        "type": "object",
+        "required": [
+          "accessToken",
+          "selectedProfile",
+          "serverId"
+        ],
+        "properties": {
+          "accessToken": {
+            "description": "Access token",
+            "type": "string"
+          },
+          "selectedProfile": {
+            "description": "Player's UUID without the dashes",
+            "type": "string"
+          },
+          "serverId": {
+            "description": "Server hash",
+            "type": "string"
+          }
+        }
+      },
+      "Session": {
+        "title": "Player Session",
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "properties"
+        ],
+        "properties": {
+          "id": {
+            "description": "Profile identifier",
+            "type": "string"
+          },
+          "name": {
+            "description": "Player's username",
+            "type": "string"
+          },
+          "properties": {
+            "description": "Additional player properties",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerProperty"
+            }
+          }
+        }
+      },
+      "PlayerProperty": {
+        "title": "Player Property",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "textures"
+            ],
+            "properties": {
+              "textures": {
+                "type": "object",
+                "required": [
+                  "signature",
+                  "value"
+                ],
+                "properties": {
+                  "value": {
+                    "description": "base64 string",
+                    "type": "string"
+                  },
+                  "signature": {
+                    "description": "base64 string; signed data using Yggdrasil's private key",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}
