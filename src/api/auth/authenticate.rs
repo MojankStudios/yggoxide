@@ -10,19 +10,19 @@ use crate::{
 #[serde(rename_all = "camelCase")]
 pub struct PayloadAuthenticate {
     /// Information about the client connecting
-    agent: Agent,
+    pub agent: Agent,
 
     /// Account name (email or player name)
-    username: String,
+    pub username: String,
 
     /// Account password
-    password: String,
+    pub password: String,
 
     /// Optional client identifier
-    client_token: Option<String>,
+    pub client_token: Option<String>,
 
     /// Whether to add the `user` object to the response
-    request_user: Option<bool>,
+    pub request_user: Option<bool>,
 }
 
 /// # Response with access token for further requests
@@ -32,21 +32,21 @@ pub struct ResponseAuthenticate {
     /// User
     ///
     /// Will only be returned if explicitly asked for
-    user: Option<User>,
+    pub user: Option<User>,
 
     /// Client identifier
-    client_token: String,
+    pub client_token: String,
 
     /// Hexadecimal or JWT
     ///
     /// The normal accessToken can be found in the payload of the JWT (second by '.' separated part as Base64 encoded JSON object), in key "yggt"
-    access_token: String,
+    pub access_token: String,
 
     /// Available profiles
-    available_profiles: Vec<AuthenticationProfile>,
+    pub available_profiles: Vec<AuthenticationProfile>,
 
     /// Selected profile
-    selected_profile: AuthenticationProfile,
+    pub selected_profile: AuthenticationProfile,
 }
 
 /// # Authenticate

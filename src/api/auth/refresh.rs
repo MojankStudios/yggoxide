@@ -10,16 +10,16 @@ use crate::{
 #[serde(rename_all = "camelCase")]
 pub struct PayloadRefresh {
     /// Client identifier
-    client_token: String,
+    pub client_token: String,
 
     /// Access token
-    access_token: String,
+    pub access_token: String,
 
     /// Selected profile
-    selected_profile: AuthenticationProfile,
+    pub selected_profile: AuthenticationProfile,
 
     /// Whether to add the `user` object to the response
-    request_user: Option<bool>,
+    pub request_user: Option<bool>,
 }
 
 /// # Response with new access token
@@ -29,16 +29,16 @@ pub struct ResponseRefresh {
     /// User
     ///
     /// Will only be returned if explicitly asked for
-    user: Option<User>,
+    pub user: Option<User>,
 
     /// Client identifier
-    client_token: String,
+    pub client_token: String,
 
     /// Access token
-    access_token: String,
+    pub access_token: String,
 
     /// Selected profile
-    selected_profile: AuthenticationProfile,
+    pub selected_profile: AuthenticationProfile,
 }
 
 /// # Refresh

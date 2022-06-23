@@ -7,7 +7,7 @@ pub enum PlayerProperty {
         value: String,
 
         /// base64 string; signed data using Yggdrasil's private key
-        signature: String,
+        signature: Option<String>,
     },
 }
 
@@ -15,11 +15,11 @@ pub enum PlayerProperty {
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct Profile {
     /// Profile identifier
-    id: String,
+    pub id: String,
 
     /// Player's username
-    name: String,
+    pub name: String,
 
     /// Additional player properties
-    properties: Vec<PlayerProperty>,
+    pub properties: Vec<PlayerProperty>,
 }

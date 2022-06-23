@@ -8,10 +8,10 @@ use crate::{Result, Ygg};
 #[serde(rename_all = "camelCase")]
 pub struct PayloadSignout {
     /// Account name (email or player name)
-    username: String,
+    pub username: String,
 
     /// Account password
-    password: String,
+    pub password: String,
 }
 
 /// # Signout

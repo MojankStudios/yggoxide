@@ -8,13 +8,13 @@ use crate::{Result, Ygg};
 #[serde(rename_all = "camelCase")]
 pub struct PayloadJoinServer {
     /// Access token
-    access_token: String,
+    pub access_token: String,
 
     /// Player's UUID without the dashes
-    selected_profile: String,
+    pub selected_profile: String,
 
     /// Server hash
-    server_id: String,
+    pub server_id: String,
 }
 
 /// # Join a server

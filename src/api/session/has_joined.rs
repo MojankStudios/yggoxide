@@ -7,13 +7,13 @@ use crate::{structs::session::Profile, Result, Ygg};
 #[serde(rename_all = "camelCase")]
 pub struct QueryHasJoined {
     /// Username
-    username: String,
+    pub username: String,
 
     /// Server hash
-    server_id: String,
+    pub server_id: String,
 
     /// User IP address
-    ip: String,
+    pub ip: String,
 }
 
 /// # Check if user has joined

@@ -6,6 +6,10 @@ pub mod has_joined;
 pub mod join;
 pub mod profile;
 
+pub use has_joined::*;
+pub use join::*;
+pub use profile::*;
+
 pub fn routes() -> (Vec<Route>, OpenApi) {
     openapi_get_routes_spec![join::join, has_joined::has_joined, profile::fetch_profile]
 }

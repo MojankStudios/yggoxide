@@ -8,10 +8,10 @@ use crate::{Result, Ygg};
 #[serde(rename_all = "camelCase")]
 pub struct PayloadInvalidate {
     /// Client identifier
-    client_token: String,
+    pub client_token: String,
 
     /// Access token
-    access_token: String,
+    pub access_token: String,
 }
 
 /// # Invalidate

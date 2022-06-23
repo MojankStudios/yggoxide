@@ -74,21 +74,21 @@ pub enum UserProperty {
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct User {
     /// Username
-    username: String,
+    pub username: String,
 
     /// Additional user properties
-    properties: Vec<UserProperty>,
+    pub properties: Vec<UserProperty>,
 
     /// The `remoteID` for the user
-    id: String,
+    pub id: String,
 }
 
 /// # Authentication Profile
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct AuthenticationProfile {
     /// Username
-    name: String,
+    pub name: String,
 
     /// UUID of the account
-    id: String,
+    pub id: String,
 }
