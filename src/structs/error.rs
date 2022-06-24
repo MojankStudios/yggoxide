@@ -1,4 +1,4 @@
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Default)]
 pub struct InnerError {
     #[serde(rename = "errorMessage")]
     error_message: String,

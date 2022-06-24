@@ -12,5 +12,5 @@ pub use crate::{
         yggdrasil::{AuthenticationProfile, User},
     },
     traits::{auth::Auth, session::Session, YggoxideImpl},
-    Result,
+    Error, InnerError, Result,
 };

@@ -8,12 +8,22 @@ This is intended to be used as a library where the user implements the `Yggoxide
 
 To run the mock server:
 
-```git
+```bash
 git clone https://github.com/MojankStudios/yggoxide
 cd yggoxide
 cargo run --example mock_server
 ```
 
 You can now see the entire exposed API at http://localhost:8000/swagger.
+
+### Spoof Server
+
+You can also spin up a "spoof" server which uses Mojang's API to resolve users.
+
+```bash
+cargo run --example spoof_server
+```
+
+If a player cannot be found, a fake player is created instead.
 
 ![Amogus](https://c.tenor.com/z561VExaPEcAAAAd/amogus.gif)

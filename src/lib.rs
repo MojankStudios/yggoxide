@@ -14,6 +14,6 @@ pub mod structs;
 pub mod traits;
 
 use rocket::State;
-pub use structs::error::{Error, Result};
+pub use structs::error::{Error, InnerError, Result};
 
 pub type Ygg = State<Box<dyn traits::YggoxideImpl>>;

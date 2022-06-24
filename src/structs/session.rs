@@ -1,5 +1,6 @@
 /// # Player Property
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Clone)]
+#[serde(tag = "name")]
 pub enum PlayerProperty {
     #[serde(rename = "textures")]
     Textures {
@@ -12,7 +13,7 @@ pub enum PlayerProperty {
 }
 
 /// # Player Profile
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Profile {
     /// Profile identifier
     pub id: String,

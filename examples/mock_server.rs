@@ -24,7 +24,7 @@ impl Auth for ExampleImpl {
                 name: data.username.clone(),
             },
             user: Some(User {
-                id: id.clone(),
+                id,
                 username: data.username,
                 properties: vec![],
             }),
