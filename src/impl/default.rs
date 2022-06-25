@@ -1,6 +1,6 @@
 use crate::structs::yggdrasil::{Information, RuntimeMode, ServerStatus};
 
-static VERSION: &'static str = "5.2.0";
+static VERSION: &str = "5.2.0";
 
 impl Default for ServerStatus {
     fn default() -> Self {

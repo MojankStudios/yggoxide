@@ -11,9 +11,7 @@ use crate::Error;
 /// HTTP response builder for Error enum
 impl<'r> Responder<'r, 'static> for Error {
     fn respond_to(self, _: &'r Request<'_>) -> response::Result<'static> {
-        let status = match self {
-            _ => Status::BadRequest,
-        };
+        let status = Status::BadRequest;
 
         // Serialize the error data structure into JSON.
         let string = json!(self).to_string();
