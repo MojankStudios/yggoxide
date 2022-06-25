@@ -1,6 +1,16 @@
 # yggoxide
 
-This crate implements Mojang's Yggdrasil authentication server (https://authserver.mojang.com) as well as the session server (https://sessionserver.mojang.com).
+This crate currently implements the REST API for:
+
+| Service                  | Exposed at            | Minecraft Production              | Coverage      |
+| ------------------------ | --------------------- | --------------------------------- | ------------- |
+| Yggdrasil authentication | `/` and `/authserver` | https://authserver.mojang.com     | 100%          |
+| Minecraft sessions       | `/session`            | https://sessionserver.mojang.com  | 100%          |
+| Minecraft services       | `/services`           | https://api.minecraftservices.com | Only 2 routes |
+
+It does not currently implement:
+
+- Mojang Accounts Service
 
 This is intended to be used as a library where the user implements the `YggoxideImpl` trait to actually give functionality to the API, take a look at `examples/mock_server.rs` to find out how to do this.
 

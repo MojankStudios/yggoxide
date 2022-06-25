@@ -1,12 +1,17 @@
-use okapi::openapi3;
+use okapi::openapi3::{self, SecurityScheme, SecuritySchemeData};
 use rocket::{
     http::{ContentType, Status},
+    request::{FromRequest, Outcome},
     response::{self, Responder},
     Request, Response,
 };
-use rocket_okapi::{gen::OpenApiGenerator, response::OpenApiResponderInner};
+use rocket_okapi::{
+    gen::OpenApiGenerator,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+    response::OpenApiResponderInner,
+};
 
-use crate::Error;
+use crate::{structs::services::AccessToken, Error};
 
 /// HTTP response builder for Error enum
 impl<'r> Responder<'r, 'static> for Error {
@@ -71,5 +76,57 @@ impl OpenApiResponderInner for Error {
             })),
             ..Default::default()
         })
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for AccessToken {
+    type Error = Error;
+
+    async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        if let Some(authorization) = request
+            .headers()
+            .get("authorization")
+            .next()
+            .map(|x| x.to_string())
+        {
+            if authorization.starts_with("Bearer ") {
+                Outcome::Success(AccessToken(authorization.chars().skip(7).collect()))
+            } else {
+                Outcome::Failure((
+                    Status::BadRequest,
+                    Error::ForbiddenOperationException(Default::default()),
+                ))
+            }
+        } else {
+            Outcome::Failure((
+                Status::Unauthorized,
+                Error::ForbiddenOperationException(Default::default()),
+            ))
+        }
+    }
+}
+
+impl<'r> OpenApiFromRequest<'r> for AccessToken {
+    fn from_request_input(
+        _gen: &mut OpenApiGenerator,
+        _name: String,
+        _required: bool,
+    ) -> rocket_okapi::Result<RequestHeaderInput> {
+        let mut requirements = schemars::Map::new();
+        requirements.insert("Access Token".to_string(), vec![]);
+
+        Ok(RequestHeaderInput::Security(
+            "Access Token".to_string(),
+            SecurityScheme {
+                data: SecuritySchemeData::ApiKey {
+                    name: "Authorization".to_string(),
+                    location: "header".to_owned(),
+                },
+                description: None,
+                extensions: schemars::Map::new(),
+            },
+            requirements,
+        ))
     }
 }

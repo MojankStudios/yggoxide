@@ -1,4 +1,4 @@
-#[derive(Serialize, Deserialize, JsonSchema, Default)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Default)]
 pub struct InnerError {
     #[serde(rename = "errorMessage")]
     error_message: String,
@@ -9,7 +9,7 @@ pub struct InnerError {
 /// Yggdrasil error variants
 ///
 /// Refer to https://wiki.vg/Authentication#Errors on how to construct these.
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
 #[serde(tag = "error")]
 pub enum Error {
     #[serde(rename = "Method Not Allowed")]

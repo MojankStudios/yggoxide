@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod services;
 pub mod session;
 
 use okapi::openapi3::{Info, OpenApi};
@@ -16,6 +17,7 @@ pub fn build_managed(ygg: Box<dyn YggoxideImpl>) -> Rocket<Build> {
         "/" => (vec![], custom_openapi_spec()),
         "" => crate::api::auth::routes(),
         "/session" => crate::api::session::routes(),
+        "/services" => crate::api::services::routes(),
     };
 
     rocket

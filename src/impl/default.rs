@@ -1,4 +1,4 @@
-use crate::structs::yggdrasil::{Information, RuntimeMode, ServerStatus};
+use crate::structs::common::{Information, RuntimeMode, ServerStatus};
 
 static VERSION: &str = "5.2.0";
 
