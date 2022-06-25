@@ -21,7 +21,7 @@ pub struct PayloadJoinServer {
 ///
 /// https://wiki.vg/Protocol_Encryption#Client
 #[openapi(tag = "Minecraft Session Server")]
-#[post("/minecraft/join", data = "<data>")]
+#[post("/session/minecraft/join", data = "<data>")]
 pub async fn join(ygg: &Ygg, data: Json<PayloadJoinServer>) -> Result<EmptyResponse> {
     ygg.join_server(data.into_inner())
         .await

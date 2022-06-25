@@ -20,7 +20,7 @@ pub struct QueryHasJoined {
 ///
 /// https://wiki.vg/Protocol_Encryption#Server
 #[openapi(tag = "Minecraft Session Server")]
-#[get("/minecraft/hasJoined?<data..>")]
+#[get("/session/minecraft/hasJoined?<data..>")]
 pub async fn has_joined(ygg: &Ygg, data: QueryHasJoined) -> Result<Json<Profile>> {
     ygg.has_joined(data).await.map(Json)
 }
