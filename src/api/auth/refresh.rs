@@ -19,6 +19,7 @@ pub struct PayloadRefresh {
     pub selected_profile: AuthenticationProfile,
 
     /// Whether to add the `user` object to the response
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub request_user: Option<bool>,
 }
 
@@ -29,6 +30,7 @@ pub struct ResponseRefresh {
     /// User
     ///
     /// Will only be returned if explicitly asked for
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub user: Option<User>,
 
     /// Client identifier

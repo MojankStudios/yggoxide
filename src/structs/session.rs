@@ -8,6 +8,7 @@ pub enum PlayerProperty {
         value: String,
 
         /// base64 string; signed data using Yggdrasil's private key
+        #[serde(skip_serializing_if = "Option::is_none")]
         signature: Option<String>,
     },
 }

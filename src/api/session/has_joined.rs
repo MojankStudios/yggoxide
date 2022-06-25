@@ -4,16 +4,16 @@ use crate::{structs::session::Profile, Result, Ygg};
 
 /// # Information about user who is joining
 #[derive(FromForm, JsonSchema)]
-#[serde(rename_all = "camelCase")]
 pub struct QueryHasJoined {
     /// Username
     pub username: String,
 
     /// Server hash
+    #[field(name = "serverId")]
     pub server_id: String,
 
     /// User IP address
-    pub ip: String,
+    pub ip: Option<String>,
 }
 
 /// # Check if user has joined

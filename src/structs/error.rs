@@ -2,6 +2,7 @@
 pub struct InnerError {
     #[serde(rename = "errorMessage")]
     error_message: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     cause: Option<String>,
 }
 
