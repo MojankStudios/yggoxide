@@ -15,14 +15,15 @@ pub fn build_managed(ygg: Box<dyn YggoxideImpl>) -> Rocket<Build> {
     mount_endpoints_and_merged_docs! {
         rocket, "/".to_owned(), settings,
         "/" => (vec![], custom_openapi_spec()),
-        "" => crate::api::auth::routes(),
-        "" => crate::api::services::routes(),
-        "/session" => crate::api::session::routes(),
+        "" => auth::routes(),
+        "" => services::routes(),
+        "" => session::routes(),
     };
 
     rocket
         .manage(ygg)
         .mount("/authserver", auth::routes().0)
+        .mount("/sessionserver", session::routes().0)
         .mount("/minecraftservices", services::routes().0)
         .mount(
             "/swagger/",
