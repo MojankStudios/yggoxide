@@ -220,8 +220,6 @@ impl Services for SpoofImpl {
     }
 }
 
-impl YggoxideImpl for SpoofImpl {}
-
 #[launch]
 fn rocket() -> _ {
     build_managed(Box::new(SpoofImpl::default()))

@@ -110,8 +110,6 @@ impl Services for ExampleImpl {
     }
 }
 
-impl YggoxideImpl for ExampleImpl {}
-
 #[launch]
 fn rocket() -> _ {
     build_managed(Box::new(ExampleImpl))

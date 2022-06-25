@@ -5,3 +5,4 @@ pub mod services;
 pub mod session;
 
 pub trait YggoxideImpl: Auth + Session + Services {}
+impl<T> YggoxideImpl for T where T: Auth + Session + Services {}
