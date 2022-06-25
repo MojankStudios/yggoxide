@@ -2,11 +2,11 @@
 
 This crate currently implements the REST API for:
 
-| Service                  | Exposed at            | Minecraft Production              | Coverage      |
-| ------------------------ | --------------------- | --------------------------------- | ------------- |
-| Yggdrasil authentication | `/` and `/authserver` | https://authserver.mojang.com     | 100%          |
-| Minecraft sessions       | `/session`            | https://sessionserver.mojang.com  | 100%          |
-| Minecraft services       | `/services`           | https://api.minecraftservices.com | Only 2 routes |
+| Service                  | Exposed at                   | Minecraft Production              | Coverage      |
+| ------------------------ | ---------------------------- | --------------------------------- | ------------- |
+| Yggdrasil authentication | `/` and `/authserver`        | https://authserver.mojang.com     | 100%          |
+| Minecraft sessions       | `/session`                   | https://sessionserver.mojang.com  | 100%          |
+| Minecraft services       | `/` and `/minecraftservices` | https://api.minecraftservices.com | Only 2 routes |
 
 It does not currently implement:
 

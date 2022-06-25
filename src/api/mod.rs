@@ -16,13 +16,14 @@ pub fn build_managed(ygg: Box<dyn YggoxideImpl>) -> Rocket<Build> {
         rocket, "/".to_owned(), settings,
         "/" => (vec![], custom_openapi_spec()),
         "" => crate::api::auth::routes(),
+        "" => crate::api::services::routes(),
         "/session" => crate::api::session::routes(),
-        "/services" => crate::api::services::routes(),
     };
 
     rocket
         .manage(ygg)
         .mount("/authserver", auth::routes().0)
+        .mount("/minecraftservices", services::routes().0)
         .mount(
             "/swagger/",
             rocket_okapi::swagger_ui::make_swagger_ui(&rocket_okapi::swagger_ui::SwaggerUIConfig {
