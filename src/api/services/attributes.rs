@@ -1,7 +1,7 @@
 use rocket::serde::json::Json;
 
 use crate::{
-    structs::{services::AccessToken, session::Profile},
+    structs::services::{AccessToken, PlayerAttributes},
     Result, Ygg,
 };
 
@@ -10,6 +10,6 @@ use crate::{
 /// Fetch information about players' online safety settings and ban status.
 #[openapi(tag = "Minecraft Services API")]
 #[get("/player/attributes")]
-pub async fn fetch_attributes(ygg: &Ygg, token: AccessToken) {
+pub async fn fetch_attributes(ygg: &Ygg, token: AccessToken) -> Result<Json<PlayerAttributes>> {
     todo!()
 }

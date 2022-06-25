@@ -680,6 +680,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "879d54834c8c76457ef4293a689b2a8c59b076067ad77b15efafbb05f92a592b"
 
 [[package]]
+name = "iso8601-timestamp"
+version = "0.1.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b088f3296223f11d6bd70998132653b30b6f39e6ab4be055c0bda486fa8d11c7"
+dependencies = [
+ "generic-array",
+ "schemars",
+ "serde",
+ "time",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2011,6 +2023,7 @@ name = "yggoxide"
 version = "0.1.0"
 dependencies = [
  "dashmap",
+ "iso8601-timestamp",
  "nanoid",
  "okapi",
  "reqwest",

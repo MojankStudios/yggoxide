@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 # Serde
 serde_json = "1.0.81"
+iso8601-timestamp = { version = "0.1.11", features = ["schema"] }
 uuid = { version = "1.1.2", features = ["serde", "v4"] }
 serde = { version = "1.0.137", features = [ "derive" ] }
 
