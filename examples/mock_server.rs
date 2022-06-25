@@ -1,5 +1,4 @@
-use uuid::Uuid;
-use yggoxide::{prelude::*, structs::services::PlayerAttributes, traits::services::Services};
+use yggoxide::prelude::*;
 
 #[macro_use]
 extern crate rocket;
@@ -10,7 +9,7 @@ pub struct ExampleImpl;
 impl Auth for ExampleImpl {
     /// Authenticate a user with the service
     async fn authenticate(&self, data: PayloadAuthenticate) -> Result<ResponseAuthenticate> {
-        let id = Uuid::new_v4().to_string();
+        let id: Uuid = Default::default();
 
         Ok(ResponseAuthenticate {
             access_token: "a".to_string(),
@@ -38,7 +37,7 @@ impl Auth for ExampleImpl {
             client_token: data.client_token,
             selected_profile: data.selected_profile,
             user: Some(User {
-                id: Uuid::new_v4().to_string(),
+                id: Default::default(),
                 username: "username".to_string(),
                 properties: vec![],
             }),
@@ -71,7 +70,7 @@ impl Session for ExampleImpl {
     /// Check whether a client has joined a server and return their user profile
     async fn has_joined(&self, data: QueryHasJoined) -> Result<Profile> {
         Ok(Profile {
-            id: "9fa80739429c46898f47eb0dfc8e5259".to_string(),
+            id: Default::default(),
             name: data.username,
             properties: vec![
                 PlayerProperty::Textures {
@@ -83,7 +82,7 @@ impl Session for ExampleImpl {
     }
 
     /// Fetch a user's profile by their UUID
-    async fn get_profile(&self, player_uuid: String) -> Result<Profile> {
+    async fn get_profile(&self, player_uuid: Uuid) -> Result<Profile> {
         Ok(Profile {
             id: player_uuid,
             name: "username".to_string(),

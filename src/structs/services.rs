@@ -1,5 +1,7 @@
 use iso8601_timestamp::Timestamp;
 
+use super::common::Uuid;
+
 /// Bearer <access_token>
 pub struct AccessToken(pub String);
 
@@ -52,7 +54,7 @@ pub enum BanReason {
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Ban {
-    pub ban_id: String,
+    pub ban_id: Uuid,
     pub expires: usize,
     pub reason: BanReason,
     pub reason_message: String,

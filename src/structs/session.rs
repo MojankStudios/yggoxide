@@ -1,3 +1,5 @@
+use super::common::Uuid;
+
 /// # Minecraft Skin Model Variant
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
 #[serde(rename_all = "UPPERCASE")]
@@ -42,7 +44,7 @@ pub struct PlayerTextures {
     pub timestamp: usize,
 
     /// Player's UUID
-    pub profile_id: String,
+    pub profile_id: Uuid,
 
     /// Player's display name
     pub profile_name: String,
@@ -70,7 +72,7 @@ pub enum PlayerProperty {
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Profile {
     /// Profile identifier
-    pub id: String,
+    pub id: Uuid,
 
     /// Player's username
     pub name: String,

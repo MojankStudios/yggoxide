@@ -46,7 +46,7 @@ impl Session for TodoImpl {
     }
 
     /// Fetch a user's profile by their UUID
-    async fn get_profile(&self, _player_uuid: String) -> Result<Profile> {
+    async fn get_profile(&self, _player_uuid: Uuid) -> Result<Profile> {
         todo!()
     }
 }

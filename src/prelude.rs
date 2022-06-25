@@ -8,10 +8,11 @@ pub use crate::{
         session::{PayloadJoinServer, QueryHasJoined},
     },
     structs::{
+        common::Uuid,
         services::{AccessToken, PlayerAttributes, PlayerCertificate},
         session::{PlayerProperty, Profile},
         yggdrasil::{AuthenticationProfile, User},
     },
-    traits::{auth::Auth, session::Session, YggoxideImpl},
+    traits::{auth::Auth, services::Services, session::Session, YggoxideImpl},
     Error, InnerError, Result,
 };

@@ -3,11 +3,17 @@ use std::ops::Add;
 use iso8601_timestamp::Timestamp;
 
 use crate::structs::{
-    common::{Information, RuntimeMode, ServerStatus},
+    common::{Information, RuntimeMode, ServerStatus, Uuid},
     services::{Keypair, PlayerCertificate, PlayerPrivileges, Toggle},
 };
 
 static VERSION: &str = "5.2.0";
+
+impl Default for Uuid {
+    fn default() -> Self {
+        Self(uuid::Uuid::new_v4())
+    }
+}
 
 impl Default for ServerStatus {
     fn default() -> Self {

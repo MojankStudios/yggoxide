@@ -1,3 +1,7 @@
+/// UUID
+#[derive(Serialize, Deserialize, Clone, PartialEq, Eq, Hash)]
+pub struct Uuid(pub uuid::Uuid);
+
 /// # Service Status
 ///
 /// Currently reported service status.

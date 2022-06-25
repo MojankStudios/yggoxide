@@ -12,6 +12,9 @@ iso8601-timestamp = { version = "0.1.11", features = ["schema"] }
 uuid = { version = "1.1.2", features = ["serde", "v4"] }
 serde = { version = "1.0.137", features = [ "derive" ] }
 
+# Encoding
+base64 = "0.13.0"
+
 # Rocket
 rocket = { version = "0.5.0-rc.2", default-features = false, features = ["json"] }
 rocket_empty = { git = "https://github.com/insertish/rocket_empty", branch = "master" }

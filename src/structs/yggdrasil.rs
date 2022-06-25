@@ -1,3 +1,5 @@
+use super::common::Uuid;
+
 /// # Yggdrasil client information
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct Agent {
@@ -42,7 +44,7 @@ pub struct User {
     pub properties: Vec<UserProperty>,
 
     /// The `remoteID` for the user
-    pub id: String,
+    pub id: Uuid,
 }
 
 /// # Authentication Profile
@@ -52,5 +54,5 @@ pub struct AuthenticationProfile {
     pub name: String,
 
     /// UUID of the account
-    pub id: String,
+    pub id: Uuid,
 }

@@ -1,7 +1,7 @@
 use okapi::openapi3::{self, SecurityScheme, SecuritySchemeData};
 use rocket::{
     http::{ContentType, Status},
-    request::{FromRequest, Outcome},
+    request::{FromParam, FromRequest, Outcome},
     response::{self, Responder},
     Request, Response,
 };
@@ -10,8 +10,13 @@ use rocket_okapi::{
     request::{OpenApiFromRequest, RequestHeaderInput},
     response::OpenApiResponderInner,
 };
+use schemars::schema::{InstanceType, Metadata, Schema, SchemaObject, SingleOrVec};
+use schemars::JsonSchema;
 
-use crate::{structs::services::AccessToken, Error};
+use crate::{
+    structs::{common::Uuid, services::AccessToken},
+    Error,
+};
 
 /// HTTP response builder for Error enum
 impl<'r> Responder<'r, 'static> for Error {
@@ -128,5 +133,32 @@ impl<'r> OpenApiFromRequest<'r> for AccessToken {
             },
             requirements,
         ))
+    }
+}
+
+impl<'r> FromParam<'r> for Uuid {
+    type Error = &'r str;
+
+    fn from_param(param: &'r str) -> Result<Self, Self::Error> {
+        uuid::Uuid::parse_str(param).map(Uuid).map_err(|_| param)
+    }
+}
+
+impl JsonSchema for Uuid {
+    fn schema_name() -> String {
+        "UUID".to_owned()
+    }
+
+    fn json_schema(_gen: &mut schemars::gen::SchemaGenerator) -> Schema {
+        Schema::Object(SchemaObject {
+            metadata: Some(Box::new(Metadata {
+                description: Some("Universally unique identifier".to_owned()),
+                examples: vec![json!("3e997354-66f2-42eb-95a4-eb04a72ce7ea")],
+                ..Default::default()
+            })),
+            format: Some("uuid".to_owned()),
+            instance_type: Some(SingleOrVec::Single(Box::new(InstanceType::String))),
+            ..Default::default()
+        })
     }
 }
