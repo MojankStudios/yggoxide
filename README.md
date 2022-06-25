@@ -16,24 +16,30 @@ This is intended to be used as a library where the user implements the `Yggoxide
 
 ### Try it out
 
-To run the mock server:
+To run the spoof server:
 
 ```bash
 git clone https://github.com/MojankStudios/yggoxide
 cd yggoxide
-cargo run --example mock_server
+cargo run --example spoof_server
 ```
 
 You can now see the entire exposed API at http://localhost:8000/swagger.
 
-### Spoof Server
+If you point your client's authentication at the server above then:
 
-You can also spin up a "spoof" server which uses Mojang's API to resolve users.
+- You can log in with any username and password.
+- Usernames are mapped to real Minecraft players.
+- If a Minecraft player does not exist, it will create a fake player.
 
-```bash
-cargo run --example spoof_server
-```
+### Implementations
 
-If a player cannot be found, a fake player is created instead.
+You can find implementations of yggoxide in the `examples` folder:
+
+| Implementation | File                                         | Description                                                                                        |
+| -------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Spoof Server   | [spoof_server.rs](/examples/spoof_server.rs) | Implements a basic cache and maps players to real Minecraft players, it also handles fake players. |
+| Mock Server    | [mock_server.rs](/examples/mock_server.rs)   | Returns sample data on all routes.                                                                 |
+| Todo Server    | [todo_server.rs](/examples/todo_server.rs)   | Traits are implemented using `todo!()`.                                                            |
 
 ![Amogus](https://c.tenor.com/z561VExaPEcAAAAd/amogus.gif)
