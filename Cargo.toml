@@ -21,6 +21,11 @@ rocket_okapi = { git = "https://github.com/insertish/okapi", rev = "a1048d0c8cd7
 okapi = { git = "https://github.com/insertish/okapi", rev = "a1048d0c8cd771e424ec97d33d825c32e06aa120" }
 schemars = { version = "0.8.8" }
 
+# Encryption
+rsa = "0.6.1"
+rand = "0.8.5"
+pem-rfc7468 = "0.3.1" # Locked at 0.3.1 for a reason
+
 [dev-dependencies]
 reqwest = { version = "0.11.11", features = ["json"] }
 dashmap = "5.3.4"

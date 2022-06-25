@@ -6,7 +6,7 @@ pub struct AccessToken(pub String);
 /// Boolean toggle struct
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct Toggle {
-    enabled: bool,
+    pub enabled: bool,
 }
 
 /// Player Privileges
@@ -14,23 +14,23 @@ pub struct Toggle {
 #[serde(rename_all = "camelCase")]
 pub struct PlayerPrivileges {
     /// Wether the player can chat
-    online_chat: Toggle,
+    pub online_chat: Toggle,
 
     /// Wether the player can join multiplayer servers
-    multiplayer_server: Toggle,
+    pub multiplayer_server: Toggle,
 
     /// Wether the player can join realms
-    multiplayer_realms: Toggle,
+    pub multiplayer_realms: Toggle,
 
     /// Wether telemetry is on
-    telemetry: Toggle,
+    pub telemetry: Toggle,
 }
 
 /// Profanity filter preferences
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfanityFilterPreferences {
-    profanity_filter_on: bool,
+    pub profanity_filter_on: bool,
 }
 
 /// Ban reason
@@ -52,55 +52,58 @@ pub enum BanReason {
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Ban {
-    ban_id: String,
-    expires: usize,
-    reason: BanReason,
-    reason_message: String,
+    pub ban_id: String,
+    pub expires: usize,
+    pub reason: BanReason,
+    pub reason_message: String,
 }
 
 /// Ban scopes
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct BanScopes {
-    multiplayer: Ban,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub multiplayer: Option<Ban>,
 }
 
 /// User ban status
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct BanStatus {
-    banned_scopes: BanScopes,
+    pub banned_scopes: BanScopes,
 }
 
 /// Player attributes
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct PlayerAttributes {
-    privileges: PlayerPrivileges,
-    profanity_filter_preferences: ProfanityFilterPreferences,
-    ban_status: BanStatus,
+    pub privileges: PlayerPrivileges,
+    pub profanity_filter_preferences: ProfanityFilterPreferences,
+    pub ban_status: BanStatus,
 }
 
 /// Key pair
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Keypair {
-    private_key: String,
-    public_key: String,
+    pub private_key: String,
+    pub public_key: String,
 }
 
-/// Key pair
+/// Player certificate
 #[derive(Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PlayerCertificate {
-    key_pair: Keypair,
+    /// The keypair
+    pub key_pair: Keypair,
 
     /// Signed base64 string
-    public_key_signature: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub public_key_signature: Option<String>,
 
     /// Time at which this certificate expires
-    expires_at: Timestamp,
+    pub expires_at: Timestamp,
 
-    /// Time at which this certificate is refreshed
-    refreshed_after: Timestamp,
+    /// Time at which this certificate was refreshed
+    pub refreshed_after: Timestamp,
 }

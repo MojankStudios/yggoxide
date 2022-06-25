@@ -11,5 +11,5 @@ use crate::{
 #[openapi(tag = "Minecraft Services API")]
 #[get("/player/attributes")]
 pub async fn fetch_attributes(ygg: &Ygg, token: AccessToken) -> Result<Json<PlayerAttributes>> {
-    todo!()
+    ygg.fetch_attributes(token).await.map(Json)
 }

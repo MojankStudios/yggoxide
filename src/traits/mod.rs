@@ -1,6 +1,7 @@
-use self::{auth::Auth, session::Session};
+use self::{auth::Auth, services::Services, session::Session};
 
 pub mod auth;
+pub mod services;
 pub mod session;
 
-pub trait YggoxideImpl: Auth + Session {}
+pub trait YggoxideImpl: Auth + Session + Services {}

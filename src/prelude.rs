@@ -8,6 +8,7 @@ pub use crate::{
         session::{PayloadJoinServer, QueryHasJoined},
     },
     structs::{
+        services::{AccessToken, PlayerAttributes, PlayerCertificate},
         session::{PlayerProperty, Profile},
         yggdrasil::{AuthenticationProfile, User},
     },

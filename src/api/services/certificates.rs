@@ -11,5 +11,5 @@ use crate::{
 #[openapi(tag = "Minecraft Services API")]
 #[get("/player/certificates")]
 pub async fn fetch_certificates(ygg: &Ygg, token: AccessToken) -> Result<Json<PlayerCertificate>> {
-    todo!()
+    ygg.fetch_certificate(token).await.map(Json)
 }

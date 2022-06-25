@@ -1,5 +1,5 @@
 use uuid::Uuid;
-use yggoxide::prelude::*;
+use yggoxide::{prelude::*, structs::services::PlayerAttributes, traits::services::Services};
 
 #[macro_use]
 extern crate rocket;
@@ -94,6 +94,19 @@ impl Session for ExampleImpl {
                 }
             ]
         })
+    }
+}
+
+#[async_trait]
+impl Services for ExampleImpl {
+    /// Fetch attributes for the currently authenticated player
+    async fn fetch_attributes(&self, _token: AccessToken) -> Result<PlayerAttributes> {
+        Ok(Default::default())
+    }
+
+    /// Fetch key-pair for the currently authenticated player
+    async fn fetch_certificate(&self, _token: AccessToken) -> Result<PlayerCertificate> {
+        Ok(Default::default())
     }
 }
 

@@ -1,6 +1,6 @@
 use dashmap::DashMap;
 use uuid::Uuid;
-use yggoxide::prelude::*;
+use yggoxide::{prelude::*, traits::services::Services};
 
 #[macro_use]
 extern crate rocket;
@@ -204,6 +204,19 @@ impl Session for SpoofImpl {
     /// Fetch a user's profile by their UUID
     async fn get_profile(&self, player_uuid: String) -> Result<Profile> {
         Ok(self.resolve_uuid(Some(&puuid(&player_uuid)?), None).await?)
+    }
+}
+
+#[async_trait]
+impl Services for SpoofImpl {
+    /// Fetch attributes for the currently authenticated player
+    async fn fetch_attributes(&self, _token: AccessToken) -> Result<PlayerAttributes> {
+        Ok(Default::default())
+    }
+
+    /// Fetch key-pair for the currently authenticated player
+    async fn fetch_certificate(&self, _token: AccessToken) -> Result<PlayerCertificate> {
+        Ok(Default::default())
     }
 }
 
