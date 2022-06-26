@@ -118,22 +118,21 @@ impl SpoofImpl {
         }
 
         // Otherwise resolve the username from Mojang's API
-        let res = reqwest::get(format!(
+        let uuid = if let Ok(res) = reqwest::get(format!(
             "https://api.mojang.com/users/profiles/minecraft/{username}"
         ))
         .await
-        .expect("Failed to contact Mojang's API");
-
-        // Take the UUID if existing otherwise leave empty
-        let uuid = if let reqwest::StatusCode::NO_CONTENT = res.status() {
-            Default::default()
+        {
+            // Take the UUID if existing otherwise leave empty
+            if let reqwest::StatusCode::NO_CONTENT = res.status() {
+                Default::default()
+            } else if let Ok(profile) = res.json::<AuthenticationProfile>().await {
+                profile.id
+            } else {
+                Default::default()
+            }
         } else {
-            let profile: AuthenticationProfile = res
-                .json()
-                .await
-                .expect("Failed to deserialise profile from Mojang");
-
-            profile.id
+            Default::default()
         };
 
         self.resolve_uuid(Some(&uuid), username.to_string()).await
