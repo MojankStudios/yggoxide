@@ -1,5 +1,6 @@
 use std::ops::Add;
 
+
 use iso8601_timestamp::Timestamp;
 
 use crate::structs::{
@@ -14,6 +15,7 @@ impl Default for Uuid {
         Self(uuid::Uuid::new_v4())
     }
 }
+
 
 impl Default for ServerStatus {
     fn default() -> Self {
