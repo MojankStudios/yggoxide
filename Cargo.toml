@@ -8,8 +8,12 @@ edition = "2021"
 [dependencies]
 # Serde
 serde_json = "1.0.81"
+iso8601-timestamp = { version = "0.1.11", features = ["schema"] }
 uuid = { version = "1.1.2", features = ["serde", "v4"] }
 serde = { version = "1.0.137", features = [ "derive" ] }
+
+# Encoding
+base64 = "0.13.0"
 
 # Rocket
 rocket = { version = "0.5.0-rc.2", default-features = false, features = ["json"] }
@@ -19,6 +23,11 @@ rocket_empty = { git = "https://github.com/insertish/rocket_empty", branch = "ma
 rocket_okapi = { git = "https://github.com/insertish/okapi", rev = "a1048d0c8cd771e424ec97d33d825c32e06aa120", features = [ "swagger" ] }
 okapi = { git = "https://github.com/insertish/okapi", rev = "a1048d0c8cd771e424ec97d33d825c32e06aa120" }
 schemars = { version = "0.8.8" }
+
+# Encryption
+rsa = "0.6.1"
+rand = "0.8.5"
+pem-rfc7468 = "0.3.1" # Locked at 0.3.1 for a reason
 
 [dev-dependencies]
 reqwest = { version = "0.11.11", features = ["json"] }

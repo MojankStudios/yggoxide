@@ -1,6 +1,6 @@
 use crate::{
     api::session::{has_joined::QueryHasJoined, join::PayloadJoinServer},
-    structs::session::Profile,
+    structs::{common::Uuid, session::Profile},
     Result,
 };
 
@@ -13,5 +13,5 @@ pub trait Session: Sync + Send {
     async fn has_joined(&self, data: QueryHasJoined) -> Result<Profile>;
 
     /// Fetch a user's profile by their UUID
-    async fn get_profile(&self, player_uuid: String) -> Result<Profile>;
+    async fn get_profile(&self, player_uuid: Uuid) -> Result<Profile>;
 }

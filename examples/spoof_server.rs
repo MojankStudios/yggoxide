@@ -1,5 +1,4 @@
 use dashmap::DashMap;
-use uuid::Uuid;
 use yggoxide::prelude::*;
 
 #[macro_use]
@@ -25,23 +24,34 @@ pub struct SpoofImpl {
     uuids: DashMap<String, Uuid>,
 }
 
-/// Short hand for parsing UUIDs
-fn puuid(v: &str) -> Result<Uuid> {
-    Uuid::parse_str(v).map_err(|_| Error::IllegalArgumentException(Default::default()))
-}
-
 impl SpoofImpl {
     /// Generate a fake player
-    fn fake_player(uuid: String, username: String) -> Profile {
+    fn fake_player(uuid: Uuid, username: String) -> Profile {
+        use yggoxide::structs::session::{
+            ModelVariant, PlayerTextureDefinitions, PlayerTextures, TextureInformation,
+            TextureMetadata,
+        };
+
         Profile {
-            id: uuid,
-            name: username,
-            properties: vec![
-                PlayerProperty::Textures {
-                    value: "ewogICJ0aW1lc3RhbXAiIDogMTY1NjAxNzg1Mzg3OCwKICAicHJvZmlsZUlkIiA6ICI5ZmE4MDczOTQyOWM0Njg5OGY0N2ViMGRmYzhlNTI1OSIsCiAgInByb2ZpbGVOYW1lIiA6ICJDeW5vc3BoZXJlIiwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzE4MTVmZWRhODJjMjNiN2M3MjdmNjg2MWM1ZmQzYzUxYWIwYjI3ZGIzZmJkMTRjZmM5YzI3ZTFhODdmNzBlMDMiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==".to_string(),
-                    signature: None
-                }
-            ]
+            id: uuid.clone(),
+            name: username.to_string(),
+            properties: vec![PlayerProperty::Textures {
+                value: base64::encode(serde_json::to_string(&PlayerTextures {
+                    timestamp: 0,
+                    profile_id: uuid,
+                    profile_name: username,
+                    textures: PlayerTextureDefinitions { skin: Some(TextureInformation {
+                        url: "http://textures.minecraft.net/texture/e49bf293e6cadc49f5b52ab90cbf4ccfc9be3a3d3c93da44f329cee1a50559bb".to_string(),
+                        metadata: Some(TextureMetadata {
+                            model: Some(ModelVariant::Slim)
+                        })
+                    }), cape: Some(TextureInformation {
+                        url: "https://cdn.discordapp.com/attachments/966400443720826970/990066807912169472/Hey-that-cape-is-preeeeeety-sus-on-planetminecraft-com.png".to_string(),
+                        metadata: None
+                    }) }
+                }).expect("json")),
+                signature: None,
+            }],
         }
     }
 
@@ -61,17 +71,22 @@ impl SpoofImpl {
 
         let profile = if let Some(uuid) = uuid {
             // Fetch player from Mojang's API
-            if let Ok(res) = reqwest::get(format!(
-                "https://sessionserver.mojang.com/session/minecraft/profile/{uuid}"
+            let player = if let Ok(res) = reqwest::get(format!(
+                "https://sessionserver.mojang.com/session/minecraft/profile/{}",
+                **uuid
             ))
             .await
             {
-                res.json()
-                    .await
-                    .expect("Failed to deserialise data from Mojang")
+                res.json().await.ok()
+            } else {
+                None
+            };
+
+            if let Some(player) = player {
+                player
             } else {
                 SpoofImpl::fake_player(
-                    uuid.to_string(),
+                    uuid.clone(),
                     username_hint
                         .into()
                         .unwrap_or_else(|| "NoPlayer".to_string()),
@@ -79,9 +94,8 @@ impl SpoofImpl {
             }
         } else {
             // Create a fake player if no UUID
-            let uuid = Uuid::new_v4();
             SpoofImpl::fake_player(
-                uuid.to_string(),
+                Default::default(),
                 username_hint
                     .into()
                     .unwrap_or_else(|| "NoUsername".to_string()),
@@ -89,9 +103,9 @@ impl SpoofImpl {
         };
 
         self.uuids
-            .insert(profile.name.to_string(), puuid(&profile.id)?);
+            .insert(profile.name.to_string(), profile.id.clone());
 
-        self.user.insert(puuid(&profile.id)?, profile.clone());
+        self.user.insert(profile.id.clone(), profile.clone());
 
         Ok(profile)
     }
@@ -104,22 +118,21 @@ impl SpoofImpl {
         }
 
         // Otherwise resolve the username from Mojang's API
-        let res = reqwest::get(format!(
+        let uuid = if let Ok(res) = reqwest::get(format!(
             "https://api.mojang.com/users/profiles/minecraft/{username}"
         ))
         .await
-        .expect("Failed to contact Mojang's API");
-
-        // Take the UUID if existing otherwise leave empty
-        let uuid = if let reqwest::StatusCode::NO_CONTENT = res.status() {
-            Default::default()
+        {
+            // Take the UUID if existing otherwise leave empty
+            if let reqwest::StatusCode::NO_CONTENT = res.status() {
+                Default::default()
+            } else if let Ok(profile) = res.json::<AuthenticationProfile>().await {
+                profile.id
+            } else {
+                Default::default()
+            }
         } else {
-            let profile: AuthenticationProfile = res
-                .json()
-                .await
-                .expect("Failed to deserialise profile from Mojang");
-
-            puuid(&profile.id)?
+            Default::default()
         };
 
         self.resolve_uuid(Some(&uuid), username.to_string()).await
@@ -134,7 +147,7 @@ impl Auth for SpoofImpl {
         let access_token = nanoid!();
 
         self.auth
-            .insert(access_token.to_string(), puuid(&profile.id)?);
+            .insert(access_token.to_string(), profile.id.clone());
 
         Ok(ResponseAuthenticate {
             access_token,
@@ -148,9 +161,7 @@ impl Auth for SpoofImpl {
     /// Refresh an access token
     async fn refresh(&self, data: PayloadRefresh) -> Result<ResponseRefresh> {
         let selected_profile = data.selected_profile;
-        let profile = self
-            .resolve_uuid(Some(&puuid(&selected_profile.id)?), None)
-            .await?;
+        let profile = self.resolve_uuid(Some(&selected_profile.id), None).await?;
 
         Ok(ResponseRefresh {
             access_token: data.access_token,
@@ -202,12 +213,23 @@ impl Session for SpoofImpl {
     }
 
     /// Fetch a user's profile by their UUID
-    async fn get_profile(&self, player_uuid: String) -> Result<Profile> {
-        Ok(self.resolve_uuid(Some(&puuid(&player_uuid)?), None).await?)
+    async fn get_profile(&self, player_uuid: Uuid) -> Result<Profile> {
+        Ok(self.resolve_uuid(Some(&player_uuid), None).await?)
     }
 }
 
-impl YggoxideImpl for SpoofImpl {}
+#[async_trait]
+impl Services for SpoofImpl {
+    /// Fetch attributes for the currently authenticated player
+    async fn fetch_attributes(&self, _token: AccessToken) -> Result<PlayerAttributes> {
+        Ok(Default::default())
+    }
+
+    /// Fetch key-pair for the currently authenticated player
+    async fn fetch_certificate(&self, _token: AccessToken) -> Result<PlayerCertificate> {
+        Ok(Default::default())
+    }
+}
 
 #[launch]
 fn rocket() -> _ {

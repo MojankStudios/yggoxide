@@ -1,6 +1,6 @@
 use rocket::serde::json::Json;
 
-use crate::structs::yggdrasil::Information;
+use crate::structs::common::Information;
 
 /// # Information
 ///
